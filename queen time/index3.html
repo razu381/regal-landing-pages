@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ===========================================================
+       QUEEN TIME — MINIMAL (Bengali-first)
+       Single file · HTML5 + Tailwind (CDN) + minimal vanilla JS
+       Thesis: calm editorial gift-card on warm paper.
+       Audience: non-tech Bangladeshi buyers · single job = place order.
+  ============================================================ -->
+  <title>Queen Time লেডিস ওয়াচ — ৳990 | ব্রেসলেট + রিং ফ্রি | Regal Watch</title>
+  <meta name="description" content="Queen Time লেডিস ওয়াচের সাথে ব্রেসলেট ও রিং সম্পূর্ণ ফ্রি, ঘড়ির বক্সসহ। আগের দাম ৳1490 — এখন মাত্র ৳990। ক্যাশ অন ডেলিভারি, সারা বাংলাদেশে ডেলিভারি।" />
+
+  <!-- Favicon: warm paper + gold Q -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FBF8F2'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23C8A951' text-anchor='middle'%3EQ%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts: Noto Serif Bengali (display) + Hind Siliguri (body/buttons) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS (CDN only) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper:    '#FBF8F2',  // page canvas (warm off-white)
+            beige:    '#F1E9DA',  // alternating sections
+            sand:     '#E7DCC6',  // footer / deeper tone
+            line:     '#E4DCC9',  // hairlines
+            ink:      '#211A11',  // headings (warm near-black)
+            graphite: '#1B1B1B',  // body + buttons
+            gold:     '#C8A951',  // accent fills only
+          },
+          fontFamily: {
+            display: ['"Noto Serif Bengali"', 'Georgia', 'serif'],
+            sans:    ['"Hind Siliguri"', 'system-ui', 'sans-serif'],
+          },
+          screens: { xs: '400px' },
+          maxWidth: { '6xl': '72rem' }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Hind Siliguri', system-ui, sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Noto Serif Bengali', Georgia, serif; }
+
+    /* One CTA style, everywhere — graphite pill, Bengali bold label */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      border-radius: 9999px; padding: 1rem 2rem;
+      font-family: 'Hind Siliguri', system-ui, sans-serif; font-weight: 700; font-size: 1.0625rem;
+      line-height: 1; min-height: 56px; cursor: pointer; text-align: center;
+      transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background:#1B1B1B; color:#FBF8F2; box-shadow:0 10px 24px rgba(33,26,17,.16); }
+    .btn-primary:hover { background:#000; box-shadow:0 16px 34px rgba(33,26,17,.24); }
+    .btn-ghost { border:1px solid rgba(27,27,27,.20); color:#1B1B1B; background:transparent; }
+    .btn-ghost:hover { background:rgba(27,27,27,.05); }
+
+    /* Colour card selected state */
+    .colour-card { transition: box-shadow .2s ease, border-color .2s ease; }
+    .colour-card.is-selected { border-color:#C8A951; box-shadow:0 0 0 2px #C8A951; }
+    .colour-check { opacity:0; transition: opacity .2s ease; }
+    .colour-card.is-selected .colour-check { opacity:1; }
+
+    /* Native FAQ */
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform .2s ease; }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
+      outline: 3px solid #C8A951; outline-offset: 2px;
+    }
+    section[id] { scroll-margin-top: 88px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-paper text-graphite antialiased pb-[76px] md:pb-0 selection:bg-gold/30">
+
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:bg-ink focus:text-paper focus:px-4 focus:py-2 focus:rounded-md">এড়িয়ে মূল বিষয়ে যান</a>
+
+  <!-- HEADER (minimal: logo + one CTA) -->
+  <header class="sticky top-0 z-50 bg-paper/90 backdrop-blur border-b border-line">
+    <div class="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
+      <a href="#top" class="font-display font-bold text-xl text-ink tracking-wide">Regal Watch</a>
+      <a href="#order" class="btn btn-primary !py-3 !px-6 !min-h-[48px] !text-[15px]">অর্ডার করুন</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="bg-paper">
+      <div class="mx-auto max-w-2xl px-4 pt-10 pb-12 sm:pt-14 sm:pb-16 text-center">
+
+        <!-- one quiet badge line -->
+        <p class="text-sm sm:text-base text-graphite/70">
+          <span class="inline-block font-semibold text-ink">স্পেশাল অফার</span>
+          <span class="mx-2 text-gold">·</span>
+          <span class="inline-block font-semibold text-ink">ক্যাশ অন ডেলিভারি</span>
+        </p>
+
+        <!-- signature: short gold hairline -->
+        <span class="block mx-auto mt-5 h-px w-12 bg-gold"></span>
+
+        <h1 class="mt-5 font-display font-bold text-ink leading-[1.18] text-[2rem] sm:text-5xl">
+          Queen Time লেডিস ওয়াচ
+        </h1>
+
+        <p class="mt-4 text-base sm:text-lg text-graphite/75 leading-relaxed">
+          ঘড়ির সাথে <strong class="text-ink font-semibold">ব্রেসলেট ও রিং সম্পূর্ণ ফ্রি</strong> — ঘড়ির বক্সসহ। রোজকার ব্যবহার, অফিস বা উপহারের জন্য দারুণ।
+        </p>
+
+        <!-- product image -->
+        <div class="mt-8 rounded-2xl ring-1 ring-line bg-beige/60 overflow-hidden">
+          <img src="images/1-hero-main-group.webp"
+               alt="Queen Time লেডিস ওয়াচ — তিনটি কালার এবং সাথে ফ্রি সোনালী ব্রেসলেট ও রিং"
+               width="900" height="900" fetchpriority="high"
+               class="w-full h-auto max-h-[56vh] object-contain" />
+        </div>
+
+        <!-- price lockup -->
+        <div class="mt-8 flex items-center justify-center gap-3 flex-wrap">
+          <span class="font-display font-bold text-ink text-5xl sm:text-6xl leading-none">৳990</span>
+          <span class="text-graphite/40 line-through font-display text-2xl">৳1490</span>
+          <span class="bg-gold text-ink font-semibold text-sm px-3 py-1.5 rounded-full">সেভ ৳500</span>
+        </div>
+
+        <!-- primary CTA -->
+        <div class="mt-7">
+          <a href="#order" class="btn btn-primary w-full sm:w-auto">অর্ডার করুন</a>
+        </div>
+        <p class="mt-3 text-sm text-graphite/60">
+          সঠিক ফোন নম্বর দিন। ফোনে কনফার্ম হওয়ার পর পার্সেল পাঠানো হবে।
+        </p>
+
+        <!-- trust strip (3) — COD already shown in the badge above -->
+        <p class="mt-7 text-sm text-graphite/70 border-t border-line pt-5">
+          ফোনে কনফার্মেশন <span class="text-gold mx-1">·</span>
+          ১ বছর ওয়ারেন্টি <span class="text-gold mx-1">·</span>
+          সারা বাংলাদেশে ডেলিভারি
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== WHAT YOU GET ===================== -->
+    <section id="receive" class="bg-beige">
+      <div class="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+        <h2 class="font-display font-bold text-ink text-2xl sm:text-3xl text-center">অর্ডার করলে যা পাবেন</h2>
+        <span class="block mx-auto mt-4 h-px w-12 bg-gold"></span>
+
+        <div class="mt-8 grid sm:grid-cols-[200px_1fr] gap-6 sm:gap-8 items-center">
+          <div class="rounded-xl overflow-hidden ring-1 ring-line bg-paper">
+            <img src="images/2-gallery-bracelet-ring.webp"
+                 alt="ফ্রি সোনালী ব্রেসলেট এবং রিং — ঘড়ির সাথে পাবেন"
+                 width="400" height="400" loading="lazy"
+                 class="w-full aspect-square object-cover" />
+          </div>
+
+          <ul class="space-y-2.5 text-base sm:text-lg">
+            <li class="flex items-center gap-3"><span class="text-gold">✓</span> Queen Time লেডিস ওয়াচ</li>
+            <li class="flex items-center gap-3"><span class="text-gold">✓</span> ব্রেসলেট — <span class="font-semibold text-ink">ফ্রি</span></li>
+            <li class="flex items-center gap-3"><span class="text-gold">✓</span> রিং — <span class="font-semibold text-ink">ফ্রি</span></li>
+            <li class="flex items-center gap-3"><span class="text-gold">✓</span> ঘড়ির বক্স — সাথে</li>
+            <li class="flex items-center gap-3"><span class="text-gold">✓</span> ৬টি কালার অপশন</li>
+          </ul>
+        </div>
+
+        <p class="mt-8 text-center text-sm text-graphite/60">
+          ৩৪ মিমি ডায়াল <span class="text-gold mx-1">·</span> স্টেইনলেস স্টিল স্ট্র্যাপ <span class="text-gold mx-1">·</span> কোয়ার্টজ মুভমেন্ট <span class="text-gold mx-1">·</span> ১ বছর ওয়ারেন্টি
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== REVIEWS ===================== -->
+    <section id="reviews" class="bg-paper">
+      <div class="mx-auto max-w-5xl px-4 py-12 sm:py-16">
+        <h2 class="font-display font-bold text-ink text-2xl sm:text-3xl text-center">কাস্টমার রিভিউ</h2>
+        <p class="mt-2 text-center text-sm text-gold text-lg tracking-wider">★★★★★</p>
+
+        <div class="mt-8 grid md:grid-cols-3 gap-4">
+          <figure class="rounded-xl bg-beige/60 ring-1 ring-line p-6">
+            <blockquote class="text-graphite/85 leading-relaxed">
+              “উপহার হিসেবে নিয়েছিলাম। বক্সসহ পেয়ে খুব ভালো লেগেছে। ব্রেসলেট আর রিং থাকায় পুরোটা সুন্দর লাগছে।”
+            </blockquote>
+            <figcaption class="mt-4 text-sm text-graphite/55">[গ্রাহক] · মিরপুর, ঢাকা</figcaption>
+          </figure>
+          <figure class="rounded-xl bg-beige/60 ring-1 ring-line p-6">
+            <blockquote class="text-graphite/85 leading-relaxed">
+              “দাম অনুযায়ী দেখতে চমৎকার। রোজকার ব্যবহারের জন্য সুন্দর আর সাধারণ। কালার বেছে নিতে পেরেছি।”
+            </blockquote>
+            <figcaption class="mt-4 text-sm text-graphite/55">[গ্রাহক] · চট্টগ্রাম</figcaption>
+          </figure>
+          <figure class="rounded-xl bg-beige/60 ring-1 ring-line p-6">
+            <blockquote class="text-graphite/85 leading-relaxed">
+              “অর্ডার করার পর ফোনে কনফার্ম করে তারপর পাঠিয়েছে। পুরো প্রসেসটা পরিষ্কার ছিল।”
+            </blockquote>
+            <figcaption class="mt-4 text-sm text-graphite/55">[গ্রাহক] · গাজীপুর</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section id="faq" class="bg-beige">
+      <div class="mx-auto max-w-2xl px-4 py-12 sm:py-16">
+        <h2 class="font-display font-bold text-ink text-2xl sm:text-3xl text-center">কিছু সাধারণ প্রশ্ন</h2>
+        <span class="block mx-auto mt-4 h-px w-12 bg-gold"></span>
+
+        <div class="mt-8 space-y-3">
+          <details class="bg-paper ring-1 ring-line rounded-xl">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-ink">
+              <span>এই অফারে কী কী পাব?</span>
+              <svg class="faq-icon w-5 h-5 text-gold shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">Queen Time লেডিস ওয়াচ, ব্রেসলেট (ফ্রি), রিং (ফ্রি) এবং ঘড়ির বক্স পাবেন।</div>
+          </details>
+
+          <details class="bg-paper ring-1 ring-line rounded-xl">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-ink">
+              <span>দাম কত?</span>
+              <svg class="faq-icon w-5 h-5 text-gold shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">আগের দাম ৳1490। এখন অফারে মাত্র ৳990।</div>
+          </details>
+
+          <details class="bg-paper ring-1 ring-line rounded-xl">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-ink">
+              <span>কালার বেছে নেওয়া যাবে?</span>
+              <svg class="faq-icon w-5 h-5 text-gold shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">হ্যাঁ, ছবি দেখে অর্ডারের সময় আপনার পছন্দের কালার বেছে নিন।</div>
+          </details>
+
+          <details class="bg-paper ring-1 ring-line rounded-xl">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-ink">
+              <span>অর্ডার করলে এরপর কী হবে?</span>
+              <svg class="faq-icon w-5 h-5 text-gold shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">অর্ডার দেওয়ার পর আমরা ফোনে কনফার্ম করব। কনফার্ম হলে পার্সেল পাঠানো হবে। ভুল নম্বর বা ফোন না ধরলে পার্সেল যাবে না।</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ORDER ===================== -->
+    <section id="order" class="bg-paper">
+      <div class="mx-auto max-w-xl px-4 py-12 sm:py-16">
+        <h2 class="font-display font-bold text-ink text-2xl sm:text-3xl text-center">এখনই অর্ডার করুন</h2>
+        <p class="mt-3 text-center text-graphite/70 leading-relaxed">
+          কালার বেছে নিজের তথ্য দিন। মাত্র ৳990 — ক্যাশ অন ডেলিভারি।
+        </p>
+
+        <!-- Order card -->
+        <div class="mt-8 rounded-2xl bg-paper ring-1 ring-line p-5 sm:p-7 shadow-[0_10px_40px_rgba(33,26,17,.06)]">
+
+          <!-- success (hidden until submit) -->
+          <div id="order-success" hidden class="text-center py-6">
+            <div class="w-14 h-14 mx-auto rounded-full bg-gold grid place-items-center text-2xl">✓</div>
+            <h3 class="mt-4 font-display font-bold text-ink text-xl">ধন্যবাদ <span id="success-name">!</span></h3>
+            <p class="mt-2 text-graphite/75 leading-relaxed">
+              আপনার অর্ডারটি পেয়েছি <span id="success-colour" class="font-semibold"></span>। আমরা শীঘ্রই ফোনে কনফার্ম করার জন্য কল করব। কনফার্ম হলে পার্সেল পাঠানো হবে।
+            </p>
+            <div class="mt-3 inline-block rounded-xl bg-beige px-5 py-3 text-sm">
+              <p><span class="text-graphite/55">মোট:</span> <span class="font-display font-bold">৳990</span> (ক্যাশ অন ডেলিভারি)</p>
+            </div>
+          </div>
+
+          <form id="order-form-el" novalidate>
+
+            <!-- STEP 1: colour -->
+            <p class="font-display font-bold text-ink"><span class="text-gold">ধাপ ১</span> · কালার বাছুন</p>
+            <div class="mt-3 grid grid-cols-3 gap-2.5" role="group" aria-label="কালার নির্বাচন">
+              <button type="button" data-colour="গোল্ডেন · সাদা" aria-pressed="false" class="colour-card text-left rounded-xl bg-beige/60 ring-1 ring-line border-2 border-transparent p-2">
+                <span class="relative block">
+                  <img src="images/3-color-golden-white.webp" alt="গোল্ডেন স্ট্র্যাপ, সাদা ডায়াল" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                  <span class="colour-check absolute top-1 right-1 grid place-items-center w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold">✓</span>
+                </span>
+                <span class="block mt-1.5 text-[11px] font-semibold leading-tight text-graphite">গোল্ডেন · সাদা</span>
+              </button>
+              <button type="button" data-colour="গোল্ডেন · ডার্ক অ্যাশ" aria-pressed="false" class="colour-card text-left rounded-xl bg-beige/60 ring-1 ring-line border-2 border-transparent p-2">
+                <span class="relative block">
+                  <img src="images/3-color-golden-darkash.webp" alt="গোল্ডেন স্ট্র্যাপ, ডার্ক অ্যাশ ডায়াল" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                  <span class="colour-check absolute top-1 right-1 grid place-items-center w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold">✓</span>
+                </span>
+                <span class="block mt-1.5 text-[11px] font-semibold leading-tight text-graphite">গোল্ডেন · ডার্ক অ্যাশ</span>
+              </button>
+              <button type="button" data-colour="সিলভার · সাদা" aria-pressed="false" class="colour-card text-left rounded-xl bg-beige/60 ring-1 ring-line border-2 border-transparent p-2">
+                <span class="relative block">
+                  <img src="images/3-color-silver-white.webp" alt="সিলভার স্ট্র্যাপ, সাদা ডায়াল" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                  <span class="colour-check absolute top-1 right-1 grid place-items-center w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold">✓</span>
+                </span>
+                <span class="block mt-1.5 text-[11px] font-semibold leading-tight text-graphite">সিলভার · সাদা</span>
+              </button>
+              <button type="button" data-colour="সিলভার · ডার্ক অ্যাশ" aria-pressed="false" class="colour-card text-left rounded-xl bg-beige/60 ring-1 ring-line border-2 border-transparent p-2">
+                <span class="relative block">
+                  <img src="images/3-color-silver-darkash.webp" alt="সিলভার স্ট্র্যাপ, ডার্ক অ্যাশ ডায়াল" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                  <span class="colour-check absolute top-1 right-1 grid place-items-center w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold">✓</span>
+                </span>
+                <span class="block mt-1.5 text-[11px] font-semibold leading-tight text-graphite">সিলভার · ডার্ক অ্যাশ</span>
+              </button>
+              <button type="button" data-colour="সিলভার · নীল" aria-pressed="false" class="colour-card text-left rounded-xl bg-beige/60 ring-1 ring-line border-2 border-transparent p-2">
+                <span class="relative block">
+                  <img src="images/3-color-silver-blue.webp" alt="সিলভার স্ট্র্যাপ, নীল ডায়াল" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                  <span class="colour-check absolute top-1 right-1 grid place-items-center w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold">✓</span>
+                </span>
+                <span class="block mt-1.5 text-[11px] font-semibold leading-tight text-graphite">সিলভার · নীল</span>
+              </button>
+              <button type="button" data-colour="রোজ গোল্ড · গাঢ় বাদামি" aria-pressed="false" class="colour-card text-left rounded-xl bg-beige/60 ring-1 ring-line border-2 border-transparent p-2">
+                <span class="relative block">
+                  <img src="images/3-color-rosegold-darkbrown.webp" alt="রোজ গোল্ড স্ট্র্যাপ, গাঢ় বাদামি ডায়াল" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                  <span class="colour-check absolute top-1 right-1 grid place-items-center w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold">✓</span>
+                </span>
+                <span class="block mt-1.5 text-[11px] font-semibold leading-tight text-graphite">রোজ গোল্ড · বাদামি</span>
+              </button>
+            </div>
+            <p class="mt-2 text-xs text-graphite/55">নির্বাচিত: <span data-selected-label class="font-semibold text-graphite">— বেছে নিন —</span></p>
+            <p id="err-colour" class="mt-1 text-xs text-red-600" role="alert" hidden>একটি কালার বেছে নিন।</p>
+
+            <!-- STEP 2: details -->
+            <p class="mt-7 font-display font-bold text-ink"><span class="text-gold">ধাপ ২</span> · আপনার তথ্য দিন</p>
+
+            <div class="mt-3 grid gap-4">
+              <div>
+                <label for="fullname" class="block text-sm font-semibold text-ink">নাম <span class="text-gold">*</span></label>
+                <input id="fullname" name="fullname" type="text" autocomplete="name" required
+                  class="mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-ink focus:ring-2 focus:ring-gold/40 outline-none transition"
+                  placeholder="আপনার নাম লিখুন" />
+                <p id="err-fullname" class="mt-1 text-xs text-red-600" role="alert" hidden>নাম লিখুন।</p>
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-semibold text-ink">ফোন নম্বর <span class="text-gold">*</span></label>
+                <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" required
+                  class="mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-ink focus:ring-2 focus:ring-gold/40 outline-none transition"
+                  placeholder="01XXXXXXXXX" />
+                <p id="err-phone" class="mt-1 text-xs text-red-600" role="alert" hidden>সঠিক ১১-সংখ্যার ফোন নম্বর দিন।</p>
+              </div>
+              <div>
+                <label for="address" class="block text-sm font-semibold text-ink">সম্পূর্ণ ঠিকানা <span class="text-gold">*</span></label>
+                <textarea id="address" name="address" rows="3" autocomplete="street-address" required
+                  class="mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-ink focus:ring-2 focus:ring-gold/40 outline-none transition resize-y"
+                  placeholder="বাড়ি, রোড, এলাকা, থানা, জেলা"></textarea>
+                <p id="err-address" class="mt-1 text-xs text-red-600" role="alert" hidden>সম্পূর্ণ ঠিকানা দিন।</p>
+              </div>
+              <div>
+                <label for="note" class="block text-sm font-semibold text-ink">অর্ডার নোট <span class="text-graphite/40 font-normal">(ঐচ্ছিক)</span></label>
+                <textarea id="note" name="note" rows="2"
+                  class="mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-ink focus:ring-2 focus:ring-gold/40 outline-none transition resize-y"
+                  placeholder="কোনো বিশেষ কথা থাকলে লিখুন"></textarea>
+              </div>
+            </div>
+
+            <label class="mt-5 flex items-start gap-3 cursor-pointer">
+              <input id="confirm" name="confirm" type="checkbox" required
+                class="mt-1 w-5 h-5 rounded border-line text-gold focus:ring-gold cursor-pointer" />
+              <span class="text-sm text-graphite/80 leading-relaxed">আমি এই অর্ডারটি নিতে চাই এবং কনফার্মেশন ফোন কলটি ধরব।</span>
+            </label>
+            <p id="err-confirm" class="mt-1 text-xs text-red-600" role="alert" hidden>কনফার্মেশন দিন।</p>
+
+            <div class="mt-6">
+              <button type="submit" class="btn btn-primary w-full">অর্ডার কনফার্ম করুন</button>
+              <p class="mt-2 text-center text-xs text-graphite/55">ফোনে কনফার্ম হওয়ার পর পার্সেল পাঠানো হবে।</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (minimal) -->
+  <footer class="bg-sand">
+    <div class="mx-auto max-w-6xl px-4 py-8 text-center">
+      <p class="font-display font-bold text-ink text-lg">Regal Watch</p>
+      <p class="mt-1 text-sm text-graphite/70">Queen Time লেডিস ওয়াচ · ব্রেসলেট + রিং ফ্রি · ঘড়ির বক্স সাথে</p>
+      <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener" class="btn btn-ghost mt-4 !py-2.5 !min-h-[44px] !text-sm">
+        সাহায্য লাগলে মেসেঞ্জারে লিখুন
+      </a>
+      <p class="mt-6 text-xs text-graphite/45">ক্যাশ অন ডেলিভারি · সারা বাংলাদেশে ডেলিভারি · ফোনে কনফার্মেশন</p>
+    </div>
+  </footer>
+
+  <!-- STICKY MOBILE BAR -->
+  <div class="md:hidden fixed inset-x-0 bottom-0 z-50 bg-paper border-t border-line shadow-[0_-6px_20px_rgba(33,26,17,.07)]">
+    <div class="flex items-center gap-3 px-3 py-2.5">
+      <div class="leading-tight pr-1">
+        <p class="font-display font-bold text-ink text-base">৳990</p>
+        <p class="text-[11px] text-graphite/60">ক্যাশ অন ডেলিভারি</p>
+      </div>
+      <a href="#order" class="btn btn-primary flex-1 !px-4 !py-3 !min-h-[48px] !text-[15px]">অর্ডার করুন</a>
+    </div>
+  </div>
+
+  <!-- TINY MESSENGER HELP -->
+  <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener"
+     class="fixed right-4 bottom-20 md:bottom-6 z-50 grid place-items-center w-12 h-12 rounded-full bg-ink text-gold shadow-lg hover:-translate-y-0.5 transition"
+     aria-label="মেসেঞ্জারে চ্যাট করুন">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.9 7.2V22l3.6-2c.8.2 1.6.3 2.5.3 5.5 0 10-4.1 10-9.2S17.5 2 12 2z"/></svg>
+  </a>
+
+  <!-- MINIMAL JS: colour select + form validation -->
+  <script>
+    (function () {
+      "use strict";
+
+      var selectedColour = null;
+
+      function selectColour(label, btn) {
+        selectedColour = label;
+        var cards = document.querySelectorAll("[data-colour]");
+        for (var i = 0; i < cards.length; i++) {
+          var on = cards[i] === btn;
+          cards[i].setAttribute("aria-pressed", on ? "true" : "false");
+          cards[i].classList.toggle("is-selected", on);
+        }
+        var lbl = document.querySelector("[data-selected-label]");
+        if (lbl) lbl.textContent = label;
+        var ec = document.getElementById("err-colour"); if (ec) ec.hidden = true;
+      }
+
+      document.querySelectorAll("[data-colour]").forEach(function (card) {
+        card.addEventListener("click", function () {
+          selectColour(card.getAttribute("data-colour"), card);
+        });
+      });
+
+      var form = document.getElementById("order-form-el");
+      var success = document.getElementById("order-success");
+
+      function showErr(id, show) { var el = document.getElementById(id); if (el) el.hidden = !show; }
+      function validPhone(v) {
+        var d = (v || "").replace(/[^\d]/g, "");
+        return (/^01[3-9]\d{8}$/.test(d)) || (/^8801[3-9]\d{8}$/.test(d));
+      }
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var name = document.getElementById("fullname");
+          var phone = document.getElementById("phone");
+          var address = document.getElementById("address");
+          var confirm = document.getElementById("confirm");
+
+          var nameOk = name.value.trim().length >= 3;
+          var phoneOk = validPhone(phone.value.trim());
+          var addrOk = address.value.trim().length >= 10;
+          var confirmOk = confirm.checked;
+          var colourOk = !!selectedColour;
+
+          name.classList.toggle("border-red-500", !nameOk);
+          phone.classList.toggle("border-red-500", !phoneOk);
+          address.classList.toggle("border-red-500", !addrOk);
+          showErr("err-fullname", !nameOk);
+          showErr("err-phone", !phoneOk);
+          showErr("err-address", !addrOk);
+          showErr("err-confirm", !confirmOk);
+          showErr("err-colour", !colourOk);
+
+          if (!(nameOk && phoneOk && addrOk && confirmOk && colourOk)) {
+            if (!nameOk) name.focus();
+            else if (!phoneOk) phone.focus();
+            else if (!addrOk) address.focus();
+            return;
+          }
+
+          form.hidden = true;
+          success.hidden = false;
+          document.getElementById("success-name").textContent = name.value.trim() + "!";
+          document.getElementById("success-colour").textContent = "(" + selectedColour + ")";
+          // NOTE: wire to backend / Elementor / webhook here. Data: name, phone, address, note, selectedColour.
+          success.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

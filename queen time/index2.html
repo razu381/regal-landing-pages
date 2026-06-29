@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ===========================================================
+       QUEEN TIME — LANDING PAGE
+       Single file · HTML5 + Tailwind (CDN) + minimal vanilla JS
+       Brand: Regal Watch · Offer: ৳990 (was ৳1490) · Bracelet + Ring FREE
+       Structure is comment-tagged for easy Elementor porting.
+  ============================================================ -->
+  <title>Queen Time Classic Ladies Watch — ৳990 | Bracelet + Ring FREE | Regal Watch</title>
+  <meta name="description" content="Queen Time Classic Ladies Watch এর সাথে Bracelet + Ring একদম FREE এবং watch box included. Regular ৳1490 — এখন মাত্র ৳990. Cash on Delivery across Bangladesh." />
+
+  <!-- Favicon (inline SVG, gold mark) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F2EBDD'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' fill='%23C8A951' text-anchor='middle'%3EQ%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts: Plus Jakarta Sans (headings/buttons) + DM Sans (paragraphs) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS (CDN only) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold:      '#C8A951',  // Bright gold — fills only (badges, cards, rings)
+            'gold-deep': '#8A6A22', // Deeper bronze-gold for TEXT (AA contrast on light)
+            beige:     '#F2EBDD',  // Main soft beige (sections)
+            cream:     '#FBF7EF',  // Lighter cream (cards / header)
+            sand:      '#E7DCC6',  // Deeper beige (top bar / footer)
+            espresso:  '#241C12',  // Warm near-black for headings/accents
+            graphite:  '#1B1B1B',  // Body text
+          },
+          fontFamily: {
+            sans:    ['"DM Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          screens: { xs: '400px' },
+          maxWidth: { '8xl': '88rem' }
+        }
+      }
+    }
+  </script>
+
+  <!-- Component styles + small enhancements -->
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; }
+    h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+    /* Consistent CTA system — same pill shape/size/weight everywhere.
+       Beige theme: graphite primary (high contrast on every soft surface),
+       gold reserved as an accent. */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      border-radius: 9999px; padding: 1rem 2rem;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 1rem;
+      line-height: 1; min-height: 56px; cursor: pointer; text-align: center;
+      transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 3px solid #C8A951; outline-offset: 3px; }
+
+    /* Primary "Order Now" — graphite, white text. High contrast on beige/cream/white. */
+    .btn-primary { background:#1B1B1B; color:#fff; box-shadow:0 10px 24px rgba(36,28,18,.16); }
+    .btn-primary:hover { background:#000; box-shadow:0 16px 34px rgba(36,28,18,.24); }
+
+    /* Secondary / Messenger ghost — subtle graphite outline on light surfaces */
+    .btn-ghost { border:1px solid rgba(27,27,27,.22); color:#1B1B1B; background:transparent; }
+    .btn-ghost:hover { background:rgba(27,27,27,.06); }
+
+    /* Eyebrow label */
+    .eyebrow { letter-spacing:.22em; text-transform:uppercase; font-weight:700; font-size:.72rem; font-family:'Plus Jakarta Sans',sans-serif; }
+
+    /* Colour card selected state (gold ring + check) */
+    .colour-card { transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease; }
+    .colour-card.is-selected { border-color:#C8A951; box-shadow:0 0 0 3px #C8A951, 0 14px 30px rgba(0,0,0,.14); }
+    .colour-check { opacity:0; transform: scale(.6); transition: opacity .2s ease, transform .2s ease; }
+    .colour-card.is-selected .colour-check { opacity:1; transform: scale(1); }
+
+    /* Product gallery thumbnail active state */
+    .pv-thumb { transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease; }
+    .pv-thumb.pv-active { border-color:#C8A951; box-shadow:0 0 0 2px #C8A951; }
+    .pv-thumb:hover { transform: translateY(-2px); }
+
+    /* Native FAQ accordion marker */
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform .2s ease; }
+
+    /* Visible keyboard focus everywhere */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
+      outline: 3px solid #C8A951; outline-offset: 2px;
+    }
+
+    /* Offset anchor targets for sticky header */
+    section[id] { scroll-margin-top: 96px; }
+
+    /* Hide scrollbar utility for thumb row on mobile (optional) */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-graphite antialiased pb-[76px] md:pb-0">
+
+  <!-- Accessibility skip link -->
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:text-graphite focus:px-4 focus:py-2 focus:rounded-md focus:shadow">Skip to content</a>
+
+  <!-- ============================================================
+       ANNOUNCEMENT / TOP BAR
+  ============================================================= -->
+  <div class="bg-sand text-graphite">
+    <div class="mx-auto max-w-8xl px-4 py-2 flex flex-col xs:flex-row items-center justify-center gap-x-6 gap-y-1 text-center">
+      <p class="text-[13px] sm:text-sm">
+        Free Bracelet + Ring with every Queen Time order
+      </p>
+      <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener"
+         class="text-[13px] sm:text-sm text-gold-deep hover:underline inline-flex items-center gap-1.5">
+        <!-- chat icon -->
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.9 7.2V22l3.6-2c.8.2 1.6.3 2.5.3 5.5 0 10-4.1 10-9.2S17.5 2 12 2z"/></svg>
+        Need help? Messenger Chat
+      </a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       HEADER (sticky)
+  ============================================================= -->
+  <header id="site-header" class="sticky top-0 z-50 bg-cream/95 backdrop-blur text-graphite border-b border-black/5 transition-shadow">
+    <div class="mx-auto max-w-8xl px-4 h-16 flex items-center justify-between gap-4">
+      <!-- Logo -->
+      <a href="#offer" class="flex items-center gap-2 shrink-0" aria-label="Regal Watch — home">
+        <span class="grid place-items-center w-9 h-9 rounded-md bg-gold text-espresso font-display font-extrabold text-lg leading-none">Q</span>
+        <span class="font-display font-extrabold tracking-wide text-lg">Regal Watch</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium" aria-label="Primary">
+        <a href="#offer" class="hover:text-gold-deep transition-colors">Offer</a>
+        <a href="#colours" class="hover:text-gold-deep transition-colors">Colours</a>
+        <a href="#details" class="hover:text-gold-deep transition-colors">Details</a>
+        <a href="#reviews" class="hover:text-gold-deep transition-colors">Reviews</a>
+        <a href="#faq" class="hover:text-gold-deep transition-colors">FAQ</a>
+      </nav>
+
+      <!-- CTAs -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener"
+           class="btn btn-ghost hidden sm:inline-flex !px-5 !py-3 !min-h-[44px] !text-sm">Messenger Chat</a>
+        <a href="#order" class="btn btn-primary !px-5 sm:!px-7 !py-3 !min-h-[44px] !text-sm">Order Now</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+         1. HERO SECTION  (dark conversion band)
+    ============================================================= -->
+    <section id="offer" class="relative overflow-hidden bg-beige text-graphite">
+      <!-- soft gold radial glow -->
+      <div class="pointer-events-none absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full bg-gold/25 blur-3xl"></div>
+
+      <div class="relative mx-auto max-w-8xl px-4 py-10 sm:py-14 lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <!-- LEFT: copy + price + CTA -->
+        <div class="order-2 lg:order-1">
+          <span class="inline-flex items-center gap-2 bg-gold text-espresso eyebrow px-3 py-1.5 rounded-full">SPECIAL OFFER</span>
+
+          <h1 class="mt-4 font-display font-extrabold tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.1]">
+            Queen Time Classic Ladies Watch
+          </h1>
+
+          <p class="mt-4 text-graphite/75 text-base sm:text-lg leading-relaxed max-w-xl">
+            Elegant ladies watch-এর সাথে পাচ্ছেন Bracelet + Ring একদম FREE এবং watch box included. Daily wear, office look, casual outing বা gift দেওয়ার জন্য clean, stylish choice.
+          </p>
+
+          <!-- Price block -->
+          <div class="mt-6 flex flex-wrap items-end gap-x-4 gap-y-2">
+            <span class="font-display font-extrabold text-5xl sm:text-6xl leading-none">৳990</span>
+            <span class="text-graphite/40 line-through text-xl sm:text-2xl font-display font-semibold">Regular ৳1490</span>
+            <span class="bg-gold text-espresso font-display font-bold text-sm px-3 py-1.5 rounded-full">You Save ৳500</span>
+          </div>
+
+          <!-- CTAs -->
+          <div class="mt-7 flex flex-col sm:flex-row gap-3">
+            <a href="#order" class="btn btn-primary w-full sm:w-auto">Order Now</a>
+            <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener" class="btn btn-ghost w-full sm:w-auto">Messenger Chat</a>
+          </div>
+
+          <!-- Small trust line -->
+          <p class="mt-4 text-sm text-graphite/60 flex items-start gap-2">
+            <svg class="w-4 h-4 mt-0.5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-4z"/></svg>
+            সঠিক phone number দিন। Phone confirmation-এর পর parcel পাঠানো হবে.
+          </p>
+
+          <!-- Highlight spec line -->
+          <p class="mt-5 text-sm sm:text-[15px] text-espresso/80 font-medium border-y border-espresso/10 py-3">
+            Slim analog dial · Adjustable stainless steel strap · Quartz movement · 1 year warranty
+          </p>
+
+          <!-- Trust points -->
+          <ul class="mt-5 grid grid-cols-1 xs:grid-cols-2 gap-x-6 gap-y-2.5 text-sm">
+            <li class="flex items-center gap-2"><svg class="w-5 h-5 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Bracelet + Ring FREE</li>
+            <li class="flex items-center gap-2"><svg class="w-5 h-5 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Watch Box Included</li>
+            <li class="flex items-center gap-2"><svg class="w-5 h-5 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Multiple Colour Options</li>
+            <li class="flex items-center gap-2"><svg class="w-5 h-5 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Cash on Delivery across Bangladesh</li>
+            <li class="flex items-center gap-2"><svg class="w-5 h-5 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Phone Confirmation Before Delivery</li>
+          </ul>
+        </div>
+
+        <!-- RIGHT: hero image -->
+        <div class="order-1 lg:order-2">
+          <div class="relative rounded-2xl overflow-hidden ring-1 ring-black/5 bg-white">
+            <img src="images/1-hero-main-group.webp" alt="Queen Time Classic Ladies Watch — three colourways displayed with the free gold bracelet and gold ring" width="900" height="900" fetchpriority="high" class="w-full h-auto max-h-[60vh] lg:max-h-[620px] object-contain bg-cream" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         2. PRODUCT VIEW SECTION  (soft bg)
+    ============================================================= -->
+    <section id="product" class="bg-cream py-14 sm:py-20">
+      <div class="mx-auto max-w-8xl px-4">
+        <div class="max-w-2xl">
+          <span class="eyebrow text-gold-deep">A closer look</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl text-graphite">A closer look at your watch</h2>
+          <p class="mt-4 text-graphite/70 text-base sm:text-lg leading-relaxed">
+            Queen Time Classic Ladies Watch দেখতে simple, clean এবং gift-ready. Watch, bracelet, ring এবং box একসাথে দেখে আপনার পছন্দের colour select করে order করুন.
+          </p>
+        </div>
+
+        <!-- Gallery: main + thumbnails -->
+        <div class="mt-8 grid lg:grid-cols-[1.4fr_1fr] gap-5">
+          <!-- Main image -->
+          <div class="rounded-2xl overflow-hidden bg-white ring-1 ring-black/5">
+            <img id="pv-main" src="images/2-product-view-main-silk.webp" alt="Queen Time watch with free gold bracelet and ring on draped beige silk" width="1000" height="800" loading="lazy" class="w-full aspect-[5/4] object-cover" />
+          </div>
+
+          <!-- Thumbnails (click to swap main image) -->
+          <div class="grid grid-cols-3 lg:grid-cols-2 gap-3 content-start" role="group" aria-label="Product gallery thumbnails">
+            <button class="pv-thumb pv-active group rounded-xl overflow-hidden bg-white ring-1 ring-black/5 aspect-square" data-thumb data-full="images/2-product-view-main-silk.webp" data-alt="Watch, bracelet and ring on beige silk" aria-label="View: watch set on silk">
+              <img src="images/2-product-view-main-silk.webp" alt="" loading="lazy" class="w-full h-full object-cover" />
+            </button>
+            <button class="pv-thumb group rounded-xl overflow-hidden bg-white ring-1 ring-black/5 aspect-square" data-thumb data-full="images/2-product-view-main-stone.webp" data-alt="Watch, bracelet and ring on dark stone" aria-label="View: watch set on dark stone">
+              <img src="images/2-product-view-main-stone.webp" alt="" loading="lazy" class="w-full h-full object-cover" />
+            </button>
+            <button class="pv-thumb group rounded-xl overflow-hidden bg-white ring-1 ring-black/5 aspect-square" data-thumb data-full="images/2-product-view-group.webp" data-alt="Three watch colours flatlay with bracelet and ring" aria-label="View: three colour flatlay">
+              <img src="images/2-product-view-group.webp" alt="" loading="lazy" class="w-full h-full object-cover" />
+            </button>
+            <button class="pv-thumb group rounded-xl overflow-hidden bg-white ring-1 ring-black/5 aspect-square" data-thumb data-full="images/2-gallery-bracelet-ring.webp" data-alt="Close-up of the free gold bracelet and ring" aria-label="View: free bracelet and ring">
+              <img src="images/2-gallery-bracelet-ring.webp" alt="" loading="lazy" class="w-full h-full object-cover" />
+            </button>
+            <button class="pv-thumb group rounded-xl overflow-hidden bg-white ring-1 ring-black/5 aspect-square" data-thumb data-full="images/gallery-golden-white-closeup.webp" data-alt="Close-up of the Golden strap white dial watch face" aria-label="View: dial close-up">
+              <img src="images/gallery-golden-white-closeup.webp" alt="" loading="lazy" class="w-full h-full object-cover" />
+            </button>
+            <button class="pv-thumb group rounded-xl overflow-hidden bg-white ring-1 ring-black/5 aspect-square" data-thumb data-full="images/gallery-rosegold-wrist-1.webp" data-alt="Rose gold watch worn on the wrist" aria-label="View: worn on wrist">
+              <img src="images/gallery-rosegold-wrist-1.webp" alt="" loading="lazy" class="w-full h-full object-cover" />
+            </button>
+          </div>
+        </div>
+
+        <!-- inline CTA toward order -->
+        <div class="mt-8">
+          <a href="#order" class="btn btn-primary">Order Now — ৳990</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         3. CHOOSE YOUR COLOUR  (white) — synced to order form
+    ============================================================= -->
+    <section id="colours" class="bg-white py-14 sm:py-20">
+      <div class="mx-auto max-w-8xl px-4">
+        <div class="max-w-2xl">
+          <span class="eyebrow text-gold-deep">Pick your style</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl text-graphite">Choose your Queen Time</h2>
+          <p class="mt-4 text-graphite/70 text-base sm:text-lg leading-relaxed">Picture দেখে আপনার পছন্দের colour select করুন.</p>
+        </div>
+
+        <!-- Colour cards grid (selection syncs to the order form) -->
+        <div id="colour-grid" class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5" role="group" aria-label="Choose a colour">
+          <!-- cards injected/labelled here; data-colour links to form -->
+          <button type="button" data-colour="golden-white" aria-pressed="false"
+            class="colour-card group text-left rounded-2xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-3 sm:p-4">
+            <div class="relative rounded-xl overflow-hidden bg-white aspect-square">
+              <img src="images/3-color-golden-white.webp" alt="Golden strap watch with white dial" loading="lazy" class="w-full h-full object-cover" />
+              <span class="colour-check absolute top-2 right-2 grid place-items-center w-7 h-7 rounded-full bg-gold text-espresso shadow">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </span>
+            </div>
+            <p class="mt-3 font-display font-bold text-sm sm:text-[15px] text-graphite leading-snug">Golden Strap <span class="text-graphite/50">|</span> White Dial</p>
+          </button>
+
+          <button type="button" data-colour="golden-darkash" aria-pressed="false"
+            class="colour-card group text-left rounded-2xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-3 sm:p-4">
+            <div class="relative rounded-xl overflow-hidden bg-white aspect-square">
+              <img src="images/3-color-golden-darkash.webp" alt="Golden strap watch with dark ash dial" loading="lazy" class="w-full h-full object-cover" />
+              <span class="colour-check absolute top-2 right-2 grid place-items-center w-7 h-7 rounded-full bg-gold text-espresso shadow">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </span>
+            </div>
+            <p class="mt-3 font-display font-bold text-sm sm:text-[15px] text-graphite leading-snug">Golden Strap <span class="text-graphite/50">|</span> Dark Ash Dial</p>
+          </button>
+
+          <button type="button" data-colour="silver-white" aria-pressed="false"
+            class="colour-card group text-left rounded-2xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-3 sm:p-4">
+            <div class="relative rounded-xl overflow-hidden bg-white aspect-square">
+              <img src="images/3-color-silver-white.webp" alt="Silver strap watch with white dial" loading="lazy" class="w-full h-full object-cover" />
+              <span class="colour-check absolute top-2 right-2 grid place-items-center w-7 h-7 rounded-full bg-gold text-espresso shadow">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </span>
+            </div>
+            <p class="mt-3 font-display font-bold text-sm sm:text-[15px] text-graphite leading-snug">Silver Strap <span class="text-graphite/50">|</span> White Dial</p>
+          </button>
+
+          <button type="button" data-colour="silver-darkash" aria-pressed="false"
+            class="colour-card group text-left rounded-2xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-3 sm:p-4">
+            <div class="relative rounded-xl overflow-hidden bg-white aspect-square">
+              <img src="images/3-color-silver-darkash.webp" alt="Silver strap watch with dark ash dial" loading="lazy" class="w-full h-full object-cover" />
+              <span class="colour-check absolute top-2 right-2 grid place-items-center w-7 h-7 rounded-full bg-gold text-espresso shadow">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </span>
+            </div>
+            <p class="mt-3 font-display font-bold text-sm sm:text-[15px] text-graphite leading-snug">Silver Strap <span class="text-graphite/50">|</span> Dark Ash Dial</p>
+          </button>
+
+          <button type="button" data-colour="silver-blue" aria-pressed="false"
+            class="colour-card group text-left rounded-2xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-3 sm:p-4">
+            <div class="relative rounded-xl overflow-hidden bg-white aspect-square">
+              <img src="images/3-color-silver-blue.webp" alt="Silver strap watch with blue dial" loading="lazy" class="w-full h-full object-cover" />
+              <span class="colour-check absolute top-2 right-2 grid place-items-center w-7 h-7 rounded-full bg-gold text-espresso shadow">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </span>
+            </div>
+            <p class="mt-3 font-display font-bold text-sm sm:text-[15px] text-graphite leading-snug">Silver Strap <span class="text-graphite/50">|</span> Blue Dial</p>
+          </button>
+
+          <button type="button" data-colour="rosegold-darkbrown" aria-pressed="false"
+            class="colour-card group text-left rounded-2xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-3 sm:p-4">
+            <div class="relative rounded-xl overflow-hidden bg-white aspect-square">
+              <img src="images/3-color-rosegold-darkbrown.webp" alt="Rose gold strap watch with dark brown dial" loading="lazy" class="w-full h-full object-cover" />
+              <span class="colour-check absolute top-2 right-2 grid place-items-center w-7 h-7 rounded-full bg-gold text-espresso shadow">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </span>
+            </div>
+            <p class="mt-3 font-display font-bold text-sm sm:text-[15px] text-graphite leading-snug">Rose Gold Strap <span class="text-graphite/50">|</span> Dark Brown Dial</p>
+          </button>
+        </div>
+
+        <!-- Selected hint + order CTA -->
+        <div class="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+          <p class="text-sm text-graphite/70">
+            আপনার পছন্দ: <span data-selected-label class="font-bold text-graphite">— select করুন —</span>
+          </p>
+          <a href="#order" class="btn btn-primary !py-3 !min-h-[48px] !text-sm">Order this colour</a>
+        </div>
+
+        <p class="mt-5 text-sm text-graphite/55 max-w-2xl">
+          Selected colour unavailable হলে confirmation call-এ আমাদের team আপনাকে জানাবে.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         4. WHAT YOU WILL RECEIVE  (dark band) — value stack
+    ============================================================= -->
+    <section id="receive" class="bg-beige text-graphite py-14 sm:py-20">
+      <div class="mx-auto max-w-8xl px-4 grid lg:grid-cols-2 gap-10 items-center">
+        <!-- lifestyle image -->
+        <div class="order-2 lg:order-1">
+          <div class="rounded-2xl overflow-hidden ring-1 ring-black/5 bg-white">
+            <img src="images/gallery-golden-white-wrist.webp" alt="Queen Time watch worn on the wrist" width="1000" height="1000" loading="lazy" class="w-full aspect-square object-cover" />
+          </div>
+        </div>
+
+        <!-- value list -->
+        <div class="order-1 lg:order-2">
+          <span class="eyebrow text-gold-deep">Complete gift-ready set</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl">Watch-er সাথে যা যা পাচ্ছেন</h2>
+          <p class="mt-4 text-graphite/70 text-base sm:text-lg">একটি order-এই পাচ্ছেন complete gift-ready set.</p>
+
+          <ul class="mt-7 space-y-3">
+            <li class="flex items-center gap-3 bg-white ring-1 ring-black/5 rounded-xl px-4 py-3">
+              <svg class="w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              <span class="font-display font-semibold">Queen Time Classic Ladies Watch</span>
+            </li>
+            <li class="flex items-center gap-3 bg-white ring-1 ring-black/5 rounded-xl px-4 py-3">
+              <svg class="w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              <span class="font-display font-semibold">Bracelet <span class="text-gold-deep">FREE</span></span>
+            </li>
+            <li class="flex items-center gap-3 bg-white ring-1 ring-black/5 rounded-xl px-4 py-3">
+              <svg class="w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              <span class="font-display font-semibold">Ring <span class="text-gold-deep">FREE</span></span>
+            </li>
+            <li class="flex items-center gap-3 bg-white ring-1 ring-black/5 rounded-xl px-4 py-3">
+              <svg class="w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              <span class="font-display font-semibold">Watch Box Included</span>
+            </li>
+            <li class="flex items-center gap-3 bg-white ring-1 ring-black/5 rounded-xl px-4 py-3">
+              <svg class="w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              <span class="font-display font-semibold">Multiple Colour Options</span>
+            </li>
+          </ul>
+
+          <div class="mt-7">
+            <a href="#order" class="btn btn-primary">Order Now — ৳990</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         5. PRODUCT DETAILS  (white) — 10 spec cards
+    ============================================================= -->
+    <section id="details" class="bg-white py-14 sm:py-20">
+      <div class="mx-auto max-w-8xl px-4">
+        <div class="max-w-2xl">
+          <span class="eyebrow text-gold-deep">Specifications</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl text-graphite">Product Details</h2>
+          <p class="mt-4 text-graphite/70 text-base sm:text-lg leading-relaxed">
+            Queen Time Classic Ladies Watch একটি elegant slim analog ladies watch. Daily wear, office use, casual outing এবং special occasion-এর জন্য এটি একটি clean, stylish choice.
+          </p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+          <!-- spec card -->
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Dial Size</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Approx. 34 mm</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Dial Type</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Slim analog dial</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Frame Material</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Alloy frame</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Strap Material</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Stainless steel</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Strap Width</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">14–16 mm</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Strap Type</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Adjustable strap</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Buckle</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Quick release adjustable hook buckle</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Movement</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Reliable quartz movement</p>
+          </div>
+          <div class="rounded-xl bg-cream ring-1 ring-black/5 p-4">
+            <p class="eyebrow text-gold-deep/90 text-[10px]">Glass</p>
+            <p class="mt-1.5 font-display font-bold text-graphite leading-snug">Durable daily-use glass</p>
+          </div>
+          <div class="rounded-xl bg-gold p-4 ring-1 ring-gold">
+            <p class="eyebrow text-espresso/70 text-[10px]">Warranty</p>
+            <p class="mt-1.5 font-display font-bold text-espresso leading-snug">1 Year Color Warranty<br/><span class="text-espresso/75 font-semibold">1 Year Machine Warranty</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         6. PRICE SUMMARY  (dark band)
+    ============================================================= -->
+    <section id="price" class="bg-beige text-graphite py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl px-4 text-center">
+        <span class="eyebrow text-gold-deep">Simple pricing</span>
+        <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl">A complete set, a simple price</h2>
+
+        <div class="mt-8 grid sm:grid-cols-2 gap-3 text-left">
+          <div class="flex items-center justify-between bg-white ring-1 ring-black/5 rounded-xl px-5 py-4">
+            <span class="text-graphite/60">Regular Price</span>
+            <span class="text-graphite/40 line-through font-display font-bold text-lg">৳1490</span>
+          </div>
+          <div class="flex items-center justify-between bg-gold text-espresso rounded-xl px-5 py-4">
+            <span class="font-display font-bold">Today's Offer</span>
+            <span class="font-display font-extrabold text-2xl">৳990</span>
+          </div>
+          <div class="flex items-center justify-between bg-white ring-1 ring-black/5 rounded-xl px-5 py-4">
+            <span class="text-graphite/60">Free Gift</span>
+            <span class="font-display font-semibold">Bracelet + Ring</span>
+          </div>
+          <div class="flex items-center justify-between bg-white ring-1 ring-black/5 rounded-xl px-5 py-4">
+            <span class="text-graphite/60">Box</span>
+            <span class="font-display font-semibold">Included</span>
+          </div>
+          <div class="sm:col-span-2 flex items-center justify-between bg-white ring-1 ring-black/5 rounded-xl px-5 py-4">
+            <span class="text-graphite/60">You Save</span>
+            <span class="font-display font-extrabold text-2xl text-gold-deep">৳500</span>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col items-center gap-3">
+          <a href="#order" class="btn btn-primary w-full sm:w-auto">Order Now</a>
+          <p class="text-sm text-graphite/55">Phone confirmation-এর পর parcel পাঠানো হবে.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         7. WHY BUYERS CHOOSE THIS SET  (soft)
+    ============================================================= -->
+    <section id="why" class="bg-cream py-14 sm:py-20">
+      <div class="mx-auto max-w-8xl px-4">
+        <div class="max-w-2xl">
+          <span class="eyebrow text-gold-deep">Why this set</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl text-graphite">Why buyers choose this set</h2>
+        </div>
+
+        <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="rounded-2xl bg-white ring-1 ring-black/5 p-6">
+            <div class="w-10 h-10 rounded-lg bg-beige text-gold-deep grid place-items-center font-display font-extrabold">1</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-graphite">Gift-ready</h3>
+            <p class="mt-2 text-graphite/70 text-[15px] leading-relaxed">Watch, bracelet, ring এবং box একসাথে থাকায় gift হিসেবে দিতে সহজ.</p>
+          </div>
+          <div class="rounded-2xl bg-white ring-1 ring-black/5 p-6">
+            <div class="w-10 h-10 rounded-lg bg-beige text-gold-deep grid place-items-center font-display font-extrabold">2</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-graphite">Budget friendly</h3>
+            <p class="mt-2 text-graphite/70 text-[15px] leading-relaxed">৳1000-এর নিচে clean-looking watch set.</p>
+          </div>
+          <div class="rounded-2xl bg-white ring-1 ring-black/5 p-6">
+            <div class="w-10 h-10 rounded-lg bg-beige text-gold-deep grid place-items-center font-display font-extrabold">3</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-graphite">Simple elegant style</h3>
+            <p class="mt-2 text-graphite/70 text-[15px] leading-relaxed">Daily outfit, office look বা casual use-এর সাথে মানিয়ে যায়.</p>
+          </div>
+          <div class="rounded-2xl bg-white ring-1 ring-black/5 p-6">
+            <div class="w-10 h-10 rounded-lg bg-beige text-gold-deep grid place-items-center font-display font-extrabold">4</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-graphite">Multiple colour choice</h3>
+            <p class="mt-2 text-graphite/70 text-[15px] leading-relaxed">Picture দেখে নিজের বা gift receiver-এর style অনুযায়ী colour choose করা যায়.</p>
+          </div>
+          <div class="rounded-2xl bg-white ring-1 ring-black/5 p-6 sm:col-span-2 lg:col-span-1">
+            <div class="w-10 h-10 rounded-lg bg-beige text-gold-deep grid place-items-center font-display font-extrabold">5</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-graphite">Phone confirmation</h3>
+            <p class="mt-2 text-graphite/70 text-[15px] leading-relaxed">Order পাঠানোর আগে phone confirmation নেওয়া হবে, তাই wrong number বা no-response হলে parcel পাঠানো হবে না.</p>
+          </div>
+          <!-- CTA card -->
+          <div class="rounded-2xl bg-white ring-1 ring-black/5 text-graphite p-6 flex flex-col justify-center sm:col-span-2 lg:col-span-2">
+            <h3 class="font-display font-bold text-lg">Ready to order?</h3>
+            <p class="mt-1 text-graphite/60 text-[15px]">Choose your colour এবং আজই order করুন — ৳990.</p>
+            <a href="#order" class="btn btn-primary mt-4 self-start">Order Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         8. CUSTOMER FEEDBACK  (white)
+         NOTE: names are placeholders — replace with real customer
+         names before publishing (per requirement doc builder note).
+    ============================================================= -->
+    <section id="reviews" class="bg-white py-14 sm:py-20">
+      <div class="mx-auto max-w-8xl px-4">
+        <div class="max-w-2xl">
+          <span class="eyebrow text-gold-deep">Reviews</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl text-graphite">Customer feedback</h2>
+        </div>
+
+        <div class="mt-8 grid md:grid-cols-3 gap-5">
+          <!-- review 1 -->
+          <figure class="rounded-2xl bg-cream ring-1 ring-black/5 p-6 flex flex-col">
+            <div class="text-gold-deep text-lg tracking-wide" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote class="mt-3 text-graphite/80 text-[15px] leading-relaxed flex-1">
+              “Gift হিসেবে নিয়েছিলাম. Box সহ আসায় presentation ভালো লেগেছে. Bracelet আর ring থাকায় setটা complete মনে হয়েছে.”
+            </blockquote>
+            <figcaption class="mt-4 pt-4 border-t border-black/10">
+              <p class="font-display font-bold text-graphite">[Customer Name]</p>
+              <p class="text-sm text-graphite/55">Mirpur, Dhaka</p>
+            </figcaption>
+          </figure>
+          <!-- review 2 -->
+          <figure class="rounded-2xl bg-cream ring-1 ring-black/5 p-6 flex flex-col">
+            <div class="text-gold-deep text-lg tracking-wide" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote class="mt-3 text-graphite/80 text-[15px] leading-relaxed flex-1">
+              “Price অনুযায়ী দেখতে সুন্দর. Daily use-er জন্য simple and elegant. Colour option থাকায় নিজের পছন্দেরটা নিতে পেরেছি.”
+            </blockquote>
+            <figcaption class="mt-4 pt-4 border-t border-black/10">
+              <p class="font-display font-bold text-graphite">[Customer Name]</p>
+              <p class="text-sm text-graphite/55">Chattogram</p>
+            </figcaption>
+          </figure>
+          <!-- review 3 -->
+          <figure class="rounded-2xl bg-cream ring-1 ring-black/5 p-6 flex flex-col">
+            <div class="text-gold-deep text-lg tracking-wide" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote class="mt-3 text-graphite/80 text-[15px] leading-relaxed flex-1">
+              “Order করার পর call দিয়ে confirm করেছে, তারপর product পাঠিয়েছে. Processটা clear ছিল.”
+            </blockquote>
+            <figcaption class="mt-4 pt-4 border-t border-black/10">
+              <p class="font-display font-bold text-graphite">[Customer Name]</p>
+              <p class="text-sm text-graphite/55">Gazipur</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         9. FAQ  (soft) — native <details> accordions
+    ============================================================= -->
+    <section id="faq" class="bg-cream py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl px-4">
+        <div class="text-center">
+          <span class="eyebrow text-gold-deep">Questions</span>
+          <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl text-graphite">Common questions</h2>
+        </div>
+
+        <div class="mt-8 space-y-3">
+          <details class="group bg-white ring-1 ring-black/5 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-display font-bold text-graphite">
+              <span>এই offer-এ কী কী পাবো?</span>
+              <svg class="faq-icon w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">
+              Queen Time Classic Ladies Watch, Bracelet FREE, Ring FREE এবং watch box included পাবেন.
+            </div>
+          </details>
+
+          <details class="group bg-white ring-1 ring-black/5 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-display font-bold text-graphite">
+              <span>Price কত?</span>
+              <svg class="faq-icon w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">
+              Regular price ৳1490. এখন offer price মাত্র ৳990.
+            </div>
+          </details>
+
+          <details class="group bg-white ring-1 ring-black/5 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-display font-bold text-graphite">
+              <span>Colour select করা যাবে?</span>
+              <svg class="faq-icon w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">
+              Yes, multiple colour options available. Order করার সময় picture দেখে আপনার পছন্দের colour select করুন.
+            </div>
+          </details>
+
+          <details class="group bg-white ring-1 ring-black/5 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-display font-bold text-graphite">
+              <span>Order করার পর কী হবে?</span>
+              <svg class="faq-icon w-5 h-5 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v14h-2z"/><path d="M5 11h14v2H5z"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-graphite/75 leading-relaxed">
+              Order submit করার পর phone confirmation করা হবে. Confirmation complete হলে parcel পাঠানো হবে. Wrong number বা no-response হলে parcel পাঠানো হবে না.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         10. ORDER SECTION  (dark band) — order card + form
+    ============================================================= -->
+    <section id="order" class="bg-beige text-graphite py-14 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4">
+
+        <!-- Order intro -->
+        <div class="text-center max-w-2xl mx-auto">
+          <h2 class="font-display font-extrabold text-3xl sm:text-4xl">৳990-তে gift-ready watch set নিন</h2>
+          <p class="mt-4 text-graphite/70 text-base sm:text-lg leading-relaxed">
+            Queen Time Classic Ladies Watch-এর সাথে Bracelet + Ring FREE এবং watch box included. নিজের জন্য বা প্রিয়জনের জন্য colour select করে আজই order করুন.
+          </p>
+          <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="#order-form" class="btn btn-primary">Order Now</a>
+            <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener" class="btn btn-ghost">Messenger Chat</a>
+          </div>
+        </div>
+
+        <!-- Order card + Form -->
+        <div id="order-form" class="mt-10 grid lg:grid-cols-[0.85fr_1.15fr] gap-5">
+
+          <!-- YOUR ORDER CARD -->
+          <aside class="bg-white text-graphite rounded-2xl ring-1 ring-black/10 p-6 h-fit">
+            <h3 class="eyebrow text-gold-deep">Your Order</h3>
+            <p class="mt-2 font-display font-extrabold text-xl leading-snug">Queen Time Classic Ladies Watch</p>
+
+            <div class="mt-4 flex items-baseline gap-3">
+              <span class="font-display font-extrabold text-3xl">৳990</span>
+              <span class="text-graphite/40 line-through font-display font-bold">৳1490</span>
+            </div>
+
+            <p class="mt-5 eyebrow text-graphite/50">Included</p>
+            <ul class="mt-2 space-y-2 text-[15px]">
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Queen Time Watch</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Bracelet <span class="text-gold-deep font-semibold">FREE</span></li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Ring <span class="text-gold-deep font-semibold">FREE</span></li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Watch Box Included</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-gold-deep" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Multiple Colour Options</li>
+            </ul>
+
+            <div class="mt-5 rounded-xl bg-cream p-3 text-sm text-graphite/70 flex items-center gap-2">
+              <svg class="w-4 h-4 text-gold-deep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-4z"/></svg>
+              Cash on Delivery · Phone Confirmation
+            </div>
+          </aside>
+
+          <!-- ORDER FORM -->
+          <div class="bg-white text-graphite rounded-2xl ring-1 ring-black/10 p-6 sm:p-7">
+            <!-- Success state (hidden until submit) -->
+            <div id="order-success" hidden class="text-center py-8">
+              <div class="w-14 h-14 mx-auto rounded-full bg-gold grid place-items-center">
+                <svg class="w-8 h-8 text-espresso" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              </div>
+              <h3 class="mt-4 font-display font-extrabold text-2xl">ধন্যবাদ <span id="success-name">!</span></h3>
+              <p class="mt-2 text-graphite/75 leading-relaxed">
+                আপনার Queen Time order পেয়েছি <span id="success-colour" class="font-semibold"></span>। আমাদের team শীঘ্রই phone confirmation-এর জন্য call করবে। Confirmation-এর পর parcel পাঠানো হবে।
+              </p>
+              <p class="mt-4 text-sm text-graphite/55">Order summary নিচে দেখুন:</p>
+              <div class="mt-2 inline-block rounded-xl bg-cream px-5 py-3 text-left text-sm">
+                <p><span class="text-graphite/55">Product:</span> Queen Time Classic Ladies Watch</p>
+                <p><span class="text-graphite/55">Total:</span> <span class="font-display font-bold">৳990</span> (COD)</p>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form id="order-form-el" novalidate>
+              <h3 class="font-display font-extrabold text-xl">Place Your Order</h3>
+              <p class="mt-1 text-sm text-graphite/60">$fields marked * are required.</p>
+
+              <!-- Colour selection (synced) -->
+              <fieldset class="mt-5">
+                <legend class="font-display font-bold text-graphite">Select Colour <span class="text-gold-deep">*</span></legend>
+                <p class="text-sm text-graphite/60 mt-0.5">Picture দেখে আপনার পছন্দের colour select করুন.</p>
+
+                <div class="mt-3 grid grid-cols-3 gap-2.5" role="group" aria-label="Select colour for order">
+                  <button type="button" data-colour="golden-white" aria-pressed="false"
+                    class="colour-card text-left rounded-xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-2">
+                    <img src="images/3-color-golden-white.webp" alt="Golden strap white dial" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                    <span class="block mt-1.5 text-[11px] font-display font-bold leading-tight text-graphite">Golden | White</span>
+                  </button>
+                  <button type="button" data-colour="golden-darkash" aria-pressed="false"
+                    class="colour-card text-left rounded-xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-2">
+                    <img src="images/3-color-golden-darkash.webp" alt="Golden strap dark ash dial" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                    <span class="block mt-1.5 text-[11px] font-display font-bold leading-tight text-graphite">Golden | D. Ash</span>
+                  </button>
+                  <button type="button" data-colour="silver-white" aria-pressed="false"
+                    class="colour-card text-left rounded-xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-2">
+                    <img src="images/3-color-silver-white.webp" alt="Silver strap white dial" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                    <span class="block mt-1.5 text-[11px] font-display font-bold leading-tight text-graphite">Silver | White</span>
+                  </button>
+                  <button type="button" data-colour="silver-darkash" aria-pressed="false"
+                    class="colour-card text-left rounded-xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-2">
+                    <img src="images/3-color-silver-darkash.webp" alt="Silver strap dark ash dial" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                    <span class="block mt-1.5 text-[11px] font-display font-bold leading-tight text-graphite">Silver | D. Ash</span>
+                  </button>
+                  <button type="button" data-colour="silver-blue" aria-pressed="false"
+                    class="colour-card text-left rounded-xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-2">
+                    <img src="images/3-color-silver-blue.webp" alt="Silver strap blue dial" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                    <span class="block mt-1.5 text-[11px] font-display font-bold leading-tight text-graphite">Silver | Blue</span>
+                  </button>
+                  <button type="button" data-colour="rosegold-darkbrown" aria-pressed="false"
+                    class="colour-card text-left rounded-xl bg-cream ring-1 ring-black/10 border-2 border-transparent p-2">
+                    <img src="images/3-color-rosegold-darkbrown.webp" alt="Rose gold strap dark brown dial" loading="lazy" class="w-full aspect-square object-cover rounded-md" />
+                    <span class="block mt-1.5 text-[11px] font-display font-bold leading-tight text-graphite">Rose Gold | Brown</span>
+                  </button>
+                </div>
+                <p class="mt-2 text-xs text-graphite/55">Selected colour: <span data-selected-label class="font-semibold text-graphite">— select করুন —</span></p>
+                <p id="err-colour" class="mt-1 text-xs text-red-600" role="alert" hidden>Please ekta colour select করুন.</p>
+              </fieldset>
+
+              <!-- Checkout fields -->
+              <div class="mt-5 grid gap-4">
+                <div>
+                  <label for="fullname" class="block text-sm font-display font-bold text-graphite">Full Name <span class="text-gold-deep">*</span></label>
+                  <input id="fullname" name="fullname" type="text" autocomplete="name" required aria-required="true"
+                    class="mt-1.5 w-full rounded-xl border border-black/15 bg-white px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-graphite focus:ring-2 focus:ring-gold/40 outline-none transition" placeholder="আপনার নাম লিখুন" />
+                  <p id="err-fullname" class="mt-1 text-xs text-red-600" role="alert" hidden>Full name required.</p>
+                </div>
+
+                <div>
+                  <label for="phone" class="block text-sm font-display font-bold text-graphite">Phone Number <span class="text-gold-deep">*</span></label>
+                  <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" required aria-required="true"
+                    class="mt-1.5 w-full rounded-xl border border-black/15 bg-white px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-graphite focus:ring-2 focus:ring-gold/40 outline-none transition" placeholder="01XXXXXXXXX" />
+                  <p id="err-phone" class="mt-1 text-xs text-red-600" role="alert" hidden>সঠিক 11-digit phone number দিন.</p>
+                </div>
+
+                <div>
+                  <label for="address" class="block text-sm font-display font-bold text-graphite">Full Address <span class="text-gold-deep">*</span></label>
+                  <textarea id="address" name="address" rows="3" autocomplete="street-address" required aria-required="true"
+                    class="mt-1.5 w-full rounded-xl border border-black/15 bg-white px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-graphite focus:ring-2 focus:ring-gold/40 outline-none transition resize-y" placeholder="House, road, area, thana, district"></textarea>
+                  <p id="err-address" class="mt-1 text-xs text-red-600" role="alert" hidden>Full delivery address required.</p>
+                </div>
+
+                <div>
+                  <label for="note" class="block text-sm font-display font-bold text-graphite">Order Note <span class="text-graphite/40 font-normal">(optional)</span></label>
+                  <textarea id="note" name="note" rows="2"
+                    class="mt-1.5 w-full rounded-xl border border-black/15 bg-white px-4 py-3.5 text-base text-graphite placeholder-graphite/35 focus:border-graphite focus:ring-2 focus:ring-gold/40 outline-none transition resize-y" placeholder="কোনো special instruction থাকলে লিখুন"></textarea>
+                </div>
+              </div>
+
+              <!-- Confirmation checkbox -->
+              <label class="mt-5 flex items-start gap-3 cursor-pointer">
+                <input id="confirm" name="confirm" type="checkbox" required aria-required="true"
+                  class="mt-1 w-5 h-5 rounded border-black/30 text-gold-deep focus:ring-gold cursor-pointer" />
+                <span class="text-sm text-graphite/80 leading-relaxed">আমি নিশ্চিত করছি যে আমি এই অর্ডারটি গ্রহণ করতে চাই এবং অর্ডার নিশ্চিত করার ফোন কল ধরবো।</span>
+              </label>
+              <p id="err-confirm" class="mt-1 text-xs text-red-600" role="alert" hidden>Confirmation দিন.</p>
+
+              <!-- Submit -->
+              <div class="mt-6">
+                <button type="submit" class="btn btn-primary w-full">Order Now</button>
+                <p class="mt-2 text-center text-xs text-graphite/55">Phone confirmation-এর পর parcel পাঠানো হবে.</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================= -->
+  <footer class="bg-sand text-graphite/60">
+    <div class="mx-auto max-w-8xl px-4 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <p class="font-display font-extrabold text-graphite text-lg">Regal Watch</p>
+        <p class="text-sm mt-1">Queen Time Classic Ladies Watch — Bracelet + Ring FREE · Watch Box Included</p>
+      </div>
+      <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener" class="btn btn-ghost !py-3 !min-h-[48px] !text-sm">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.9 7.2V22l3.6-2c.8.2 1.6.3 2.5.3 5.5 0 10-4.1 10-9.2S17.5 2 12 2z"/></svg>
+        Need help? Chat with us
+      </a>
+    </div>
+    <div class="border-t border-black/10">
+      <p class="mx-auto max-w-8xl px-4 py-4 text-xs text-graphite/45 text-center">© Regal Watch. Cash on Delivery across Bangladesh · Phone Confirmation Before Delivery.</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       STICKY MOBILE BAR (mobile only)
+  ============================================================= -->
+  <div id="mobile-bar" class="md:hidden fixed inset-x-0 bottom-0 z-50 bg-cream text-graphite border-t border-black/10 shadow-[0_-6px_20px_rgba(36,28,18,.08)]">
+    <div class="flex items-center gap-2 px-3 py-2.5">
+      <div class="leading-tight pr-1">
+        <p class="font-display font-extrabold text-base">৳990</p>
+        <p class="text-[11px] text-graphite/60">Bracelet + Ring FREE</p>
+      </div>
+      <a href="#order" class="btn btn-primary flex-1 !px-4 !py-3 !min-h-[48px] !text-sm">Order Now</a>
+      <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener" aria-label="Chat on Messenger"
+         class="btn btn-ghost !px-4 !py-3 !min-h-[48px]">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.9 7.2V22l3.6-2c.8.2 1.6.3 2.5.3 5.5 0 10-4.1 10-9.2S17.5 2 12 2z"/></svg>
+        Messenger
+      </a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FLOATING MESSENGER
+       TODO: verify/replace https://m.me/regalwatchbd with your page URL.
+  ============================================================= -->
+  <a href="https://m.me/regalwatchbd" target="_blank" rel="noopener"
+     class="fixed right-4 z-50 group flex items-center gap-2 rounded-full bg-gold text-espresso shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition pl-3 pr-4 py-3 bottom-20 md:bottom-6"
+     aria-label="Chat with us on Messenger">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.9 7.2V22l3.6-2c.8.2 1.6.3 2.5.3 5.5 0 10-4.1 10-9.2S17.5 2 12 2z"/></svg>
+    <span class="font-display font-bold text-sm hidden sm:inline">Need help? Chat with us</span>
+  </a>
+
+  <!-- ============================================================
+       MINIMAL VANILLA JS
+       1) Sticky header shadow on scroll
+       2) Colour selection synced between #colours and the order form
+       3) Product gallery main/thumbnail swap
+       4) Order form validation + success state
+  ============================================================= -->
+  <script>
+    (function () {
+      "use strict";
+
+      // Colour labels (id -> human label)
+      var COLOUR_LABELS = {
+        "golden-white":      "Golden Strap | White Dial",
+        "golden-darkash":    "Golden Strap | Dark Ash Dial",
+        "silver-white":      "Silver Strap | White Dial",
+        "silver-darkash":    "Silver Strap | Dark Ash Dial",
+        "silver-blue":       "Silver Strap | Blue Dial",
+        "rosegold-darkbrown":"Rose Gold Strap | Dark Brown Dial"
+      };
+
+      // ---------- 1) Sticky header shadow ----------
+      var header = document.getElementById("site-header");
+      var onScroll = function () {
+        if (window.scrollY > 8) header.classList.add("shadow-lg");
+        else header.classList.remove("shadow-lg");
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      // ---------- 2) Colour selection (synced everywhere) ----------
+      var selectedColour = null;
+
+      function selectColour(id) {
+        selectedColour = id;
+        // toggle active state on every colour card (gallery + form)
+        var cards = document.querySelectorAll("[data-colour]");
+        for (var i = 0; i < cards.length; i++) {
+          var el = cards[i];
+          var on = el.getAttribute("data-colour") === id;
+          el.setAttribute("aria-pressed", on ? "true" : "false");
+          el.classList.toggle("is-selected", on);
+        }
+        // update selected-label text nodes
+        var labels = document.querySelectorAll("[data-selected-label]");
+        for (var j = 0; j < labels.length; j++) {
+          labels[j].textContent = id ? COLOUR_LABELS[id] : "— select করুন —";
+        }
+        // clear colour error if any
+        var ec = document.getElementById("err-colour");
+        if (ec) ec.hidden = true;
+      }
+
+      document.querySelectorAll("[data-colour]").forEach(function (card) {
+        card.addEventListener("click", function () {
+          selectColour(card.getAttribute("data-colour"));
+        });
+      });
+
+      // ---------- 3) Product gallery main/thumbnail swap ----------
+      var mainImg = document.getElementById("pv-main");
+      if (mainImg) {
+        document.querySelectorAll("[data-thumb]").forEach(function (thumb) {
+          thumb.addEventListener("click", function () {
+            mainImg.src = thumb.getAttribute("data-full");
+            mainImg.alt = thumb.getAttribute("data-alt") || "";
+            document.querySelectorAll("[data-thumb]").forEach(function (t) { t.classList.remove("pv-active"); });
+            thumb.classList.add("pv-active");
+          });
+        });
+      }
+
+      // ---------- 4) Order form validation + success ----------
+      var form = document.getElementById("order-form-el");
+      var success = document.getElementById("order-success");
+
+      function showErr(id, show) {
+        var el = document.getElementById(id);
+        if (el) el.hidden = !show;
+      }
+
+      function validPhone(v) {
+        var d = (v || "").replace(/[^\d]/g, "");
+        return (/^01[3-9]\d{8}$/.test(d)) || (/^8801[3-9]\d{8}$/.test(d));
+      }
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var ok = true;
+
+          var name = document.getElementById("fullname");
+          var phone = document.getElementById("phone");
+          var address = document.getElementById("address");
+          var confirm = document.getElementById("confirm");
+
+          var nameOk = name.value.trim().length >= 3;
+          var phoneOk = validPhone(phone.value.trim());
+          var addrOk = address.value.trim().length >= 10;
+          var confirmOk = confirm.checked;
+          var colourOk = !!selectedColour;
+
+          // toggle invalid styling + messages
+          name.classList.toggle("border-red-500", !nameOk);
+          phone.classList.toggle("border-red-500", !phoneOk);
+          address.classList.toggle("border-red-500", !addrOk);
+          showErr("err-fullname", !nameOk);
+          showErr("err-phone", !phoneOk);
+          showErr("err-address", !addrOk);
+          showErr("err-confirm", !confirmOk);
+          showErr("err-colour", !colourOk);
+
+          ok = nameOk && phoneOk && addrOk && confirmOk && colourOk;
+
+          if (!ok) {
+            // focus first invalid field
+            if (!nameOk) name.focus();
+            else if (!phoneOk) phone.focus();
+            else if (!addrOk) address.focus();
+            return;
+          }
+
+          // success state
+          form.hidden = true;
+          success.hidden = false;
+          document.getElementById("success-name").textContent = name.value.trim() + "!";
+          document.getElementById("success-colour").textContent = "(" + COLOUR_LABELS[selectedColour] + ")";
+
+          // NOTE: Wire this point to your backend / Elementor form / webhook / Google Sheet
+          // as needed. Data available: name, phone, address, note, selectedColour.
+
+          success.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
